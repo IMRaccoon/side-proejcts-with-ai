@@ -1,0 +1,19 @@
+# Java / Maven
+target/
+*.iml
+.idea/
+*.log
+
+# OS
+.DS_Store
+
+# Node/Front (if used later)
+node_modules/
+
+# Env/Secrets
+.env
+*.env
+.env.*
+
+# Generated code
+**/generated/
