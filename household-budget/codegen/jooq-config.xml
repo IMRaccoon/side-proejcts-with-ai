@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <jdbc>
+    <driver>org.postgresql.Driver</driver>
+    <url>jdbc:postgresql://${env.POSTGRES_HOST:localhost}:${env.POSTGRES_PORT:5432}/${env.POSTGRES_DB:hb}</url>
+    <user>${env.POSTGRES_USER:hbuser}</user>
+    <password>${env.POSTGRES_PASSWORD:hbpass}</password>
+  </jdbc>
+  <generator>
+    <database>
+      <name>org.jooq.meta.postgres.PostgresDatabase</name>
+      <inputSchema>public</inputSchema>
+    </database>
+    <target>
+      <packageName>com.example.hb.jooq</packageName>
+      <directory>../app/target/generated-sources/jooq</directory>
+    </target>
+  </generator>
+</configuration>

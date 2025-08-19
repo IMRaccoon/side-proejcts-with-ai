@@ -1,0 +1,13 @@
+{
+  "inputSpec": "../docs/API.yaml",
+  "generatorName": "spring",
+  "outputDir": "../app",
+  "additionalProperties": {
+    "interfaceOnly": true,
+    "useSpringBoot3": true,
+    "dateLibrary": "java8",
+    "pomArtifactId": "household-bugdet",
+    "apiPackage": "com.example.hb.api",
+    "modelPackage": "com.example.hb.model"
+  }
+}

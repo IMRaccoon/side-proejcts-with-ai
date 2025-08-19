@@ -5,13 +5,8 @@
 - Java 21, Spring Boot 3.3.x, PostgreSQL, Flyway, jOOQ
 - Tests: JUnit5 + Testcontainers
 
-## Dev
+## Quickstart
 
-- `docker compose up -d db`
-- `mvn -B verify`
-- 앱 실행 후 `/actuator/health`
-
-## Docs
-
-- PRD: `./docs/PRD.md`
-- API: `./docs/API.yaml`
+- `make up`
+- `make test`
+- API 스펙: `./docs/API.yaml`
