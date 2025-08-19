@@ -1,0 +1,93 @@
+openapi: 3.0.3
+info:
+  title: Household Budget API
+  version: 0.1.0
+paths:
+  /auth/login:
+    post:
+      summary: OAuth 로그인 콜백 처리 (서버측 세션/토큰 발급)
+      responses: { "200": { description: "OK" } }
+
+  /households:
+    post:
+      summary: 공동 가계부 생성
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, properties: { name: { type: string } }, required: [name] }
+      responses: { "201": { description: "Created" } }
+    get:
+      summary: 내가 속한 가계부 목록
+      responses: { "200": { description: "OK" } }
+
+  /households/{householdId}/invite:
+    post:
+      summary: 배우자 초대(이메일)
+      parameters: [{ name: householdId, in: path, required: true, schema: { type: string } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, properties: { email: { type: string, format: email } }, required: [email] }
+      responses: { "202": { description: "Invitation sent" } }
+
+  /transactions:
+    post:
+      summary: 트랜잭션 생성(수입/지출)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                householdId: { type: string }
+                type: { type: string, enum: [INCOME, EXPENSE] }
+                amount: { type: number }
+                currency: { type: string, default: "KRW" }
+                category: { type: string }
+                method: { type: string, description: "결제수단" }
+                occurredAt: { type: string, format: date-time }
+                memo: { type: string }
+              required: [householdId, type, amount, occurredAt]
+      responses: { "201": { description: "Created" } }
+    get:
+      summary: "트랜잭션 목록(필터: householdId, month, category)"
+      parameters:
+        - { name: householdId, in: query, required: true, schema: { type: string } }
+        - { name: month, in: query, schema: { type: string, example: "2025-08" } }
+        - { name: category, in: query, schema: { type: string } }
+        - { name: cursor, in: query, schema: { type: string } }
+      responses: { "200": { description: "OK" } }
+
+  /summaries/monthly:
+    get:
+      summary: 월별 요약(총수입/총지출/잔액)
+      parameters:
+        - { name: householdId, in: query, required: true, schema: { type: string } }
+        - { name: month, in: query, required: true, schema: { type: string, example: "2025-08" } }
+      responses: { "200": { description: "OK" } }
+
+  /budgets:
+    put:
+      summary: 월별 카테고리 예산 설정
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                householdId: { type: string }
+                month: { type: string, example: "2025-08" }
+                items:
+                  type: array
+                  items:
+                    {
+                      type: object,
+                      properties: { category: { type: string }, amount: { type: number } },
+                      required: [category, amount],
+                    }
+              required: [householdId, month, items]
+      responses: { "204": { description: "Updated" } }
