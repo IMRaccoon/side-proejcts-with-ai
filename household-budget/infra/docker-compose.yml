@@ -21,15 +21,20 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4:8
+    env_file:
+      - ../.env
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@example.com
       PGADMIN_DEFAULT_PASSWORD: admin
     ports: ["8081:80"]
-    depends_on: [db]
+    depends_on:
+      db:
+        condition: service_healthy
     networks: [hb_net]
 
 networks:
-  hb_net: {}
+  hb_net:
+    driver: bridge
 
 volumes:
   db_data: {}

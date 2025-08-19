@@ -1,19 +1,96 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.19.0.xsd">
+
+  <!-- JDBC connection configuration -->
   <jdbc>
     <driver>org.postgresql.Driver</driver>
     <url>jdbc:postgresql://${env.POSTGRES_HOST:localhost}:${env.POSTGRES_PORT:5432}/${env.POSTGRES_DB:hb}</url>
     <user>${env.POSTGRES_USER:hbuser}</user>
     <password>${env.POSTGRES_PASSWORD:hbpass}</password>
+    
+    <!-- Connection properties -->
+    <properties>
+      <property>
+        <key>ssl</key>
+        <value>false</value>
+      </property>
+    </properties>
   </jdbc>
+
+  <!-- Database configuration -->
+  <database>
+    <name>org.jooq.meta.postgres.PostgresDatabase</name>
+    
+    <!-- Database schema configuration -->
+    <inputSchema>public</inputSchema>
+    
+    <!-- Include all tables -->
+    <includes>.*</includes>
+    
+    <!-- Exclude system tables -->
+    <excludes>
+      flyway_schema_history
+    </excludes>
+    
+    <!-- Custom type mappings -->
+    <forcedTypes>
+      <!-- Map PostgreSQL UUID to java.util.UUID -->
+      <forcedType>
+        <name>UUID</name>
+        <includeExpression>.*\.id</includeExpression>
+        <includeTypes>uuid</includeTypes>
+      </forcedType>
+      
+      <!-- Map PostgreSQL TIMESTAMPTZ to java.time.OffsetDateTime -->
+      <forcedType>
+        <name>OFFSETDATETIME</name>
+        <includeTypes>timestamptz</includeTypes>
+      </forcedType>
+      
+      <!-- Map JSONB to String -->
+      <forcedType>
+        <name>VARCHAR</name>
+        <includeTypes>jsonb</includeTypes>
+      </forcedType>
+    </forcedTypes>
+  </database>
+
+  <!-- Code generation configuration -->
   <generator>
-    <database>
-      <name>org.jooq.meta.postgres.PostgresDatabase</name>
-      <inputSchema>public</inputSchema>
-    </database>
+    <name>org.jooq.codegen.JavaGenerator</name>
+    
+    <!-- Target configuration -->
     <target>
-      <packageName>com.example.hb.jooq</packageName>
+      <!-- Output directory -->
       <directory>../app/target/generated-sources/jooq</directory>
+      
+      <!-- Package name -->
+      <packageName>com.raccoon.householdbudget.jooq</packageName>
+      
+      <!-- Clean target directory -->
+      <clean>true</clean>
     </target>
+    
+    <!-- Generate configuration -->
+    <generate>
+      <!-- Generate POJOs -->
+      <pojos>true</pojos>
+      
+      <!-- Generate Records -->
+      <records>true</records>
+      
+      <!-- Generate fluent setters -->
+      <fluentSetters>true</fluentSetters>
+      
+      <!-- Generate JavaDoc -->
+      <javadoc>true</javadoc>
+      
+      <!-- Generate comments -->
+      <comments>true</comments>
+      
+      <!-- Generate global object references -->
+      <globalObjectReferences>true</globalObjectReferences>
+    </generate>
   </generator>
+  
 </configuration>

@@ -5,9 +5,30 @@
   "additionalProperties": {
     "interfaceOnly": true,
     "useSpringBoot3": true,
+    "apiPackage": "com.raccoon.householdbudget.api",
+    "modelPackage": "com.raccoon.householdbudget.model",
+    "configPackage": "com.raccoon.householdbudget.config",
+    "basePackage": "com.raccoon.householdbudget",
+    "invokerPackage": "com.raccoon.householdbudget.invoker",
     "dateLibrary": "java8",
-    "pomArtifactId": "household-bugdet",
-    "apiPackage": "com.example.hb.api",
-    "modelPackage": "com.example.hb.model"
+    "useTags": true,
+    "useBeanValidation": true,
+    "performBeanValidation": false,
+    "useOptional": false,
+    "reactive": false,
+    "skipDefaultInterface": true,
+    "documentationProvider": "none",
+    "annotationLibrary": "none",
+    "hideGenerationTimestamp": true,
+    "removeEnumValuePrefix": false,
+    "pomArtifactId": "household-budget"
+  },
+  "typeMappings": {
+    "DateTime": "java.time.OffsetDateTime",
+    "Date": "java.time.LocalDate"
+  },
+  "importMappings": {
+    "java.time.OffsetDateTime": "java.time.OffsetDateTime",
+    "java.time.LocalDate": "java.time.LocalDate"
   }
 }
